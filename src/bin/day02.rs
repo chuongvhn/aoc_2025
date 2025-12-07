@@ -145,21 +145,21 @@ fn split(input: &String)->Vec<&str> {
 
 fn main() {
     // run_tests();
-    let input = aoc_2025::read_file("/home/vco1hc/99_playground/aoc_2025/input_day02.txt");
+    let input = aoc_2025::read_file("input_day02.txt");
     let ids = split(&input[0]);
     let mut ret: u64 = 0;
-    let mut ret2: u64 = 0;
+    // let mut ret2: u64 = 0;
     for id in ids {
         let ranges = split_into_start_end(&id);
         let numbers = get_invalid_id(ranges[0],ranges[1]);
         for num in numbers {
             ret += num as u64;
         }
-        let numbers = get_invalid_id_part2(ranges[0], ranges[1]);
-        for num in numbers {
-            ret2 += num as u64;
-        }
+        // let numbers = get_invalid_id_part2(ranges[0], ranges[1]);
+        // for num in numbers {
+        //     ret2 += num as u64;
+        // }
     }
 
-    println!("ret {ret}, ret2 {ret2}");
+    println!("ret {ret}, ret2 ");
 }
