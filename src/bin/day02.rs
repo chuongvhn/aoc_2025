@@ -54,8 +54,10 @@ fn is_invalid_id_part2(num: u64)->bool {
     for idx in 0..=digits.len() /2 -1 {
         let mut continue_to_check = true;
         let combined_digit = combine_digit(0,idx as u64, &digits);
-        for mut i_named_another_idx in 0..digits.len() {
-            if combined_digit.num != combine_digit(i_named_another_idx as u64, (i_named_another_idx + combined_digit.len as usize) as u64, &digits).num {
+        let mut i_named_another_idx = combined_digit.len as usize;
+        while i_named_another_idx <= digits.len() - combined_digit.len as usize {
+            let candiate_to_compare = combine_digit(i_named_another_idx as u64, (i_named_another_idx + combined_digit.len as usize - 1) as u64, &digits);
+            if combined_digit.num !=  candiate_to_compare.num {
                 continue_to_check = false;
                 break;
             }
@@ -117,7 +119,7 @@ fn run_tests() {
 
 #[test]
 fn test_part2() {
-    let numbers = get_invalid_id_part2(38593856, 38593856);
+    let numbers = get_invalid_id_part2(38593856, 38593862);
     for n in numbers {
         println!("{n},");
     }
@@ -148,17 +150,17 @@ fn main() {
     let input = aoc_2025::read_file("input_day02.txt");
     let ids = split(&input[0]);
     let mut ret: u64 = 0;
-    // let mut ret2: u64 = 0;
+    let mut ret2: u64 = 0;
     for id in ids {
         let ranges = split_into_start_end(&id);
         let numbers = get_invalid_id(ranges[0],ranges[1]);
         for num in numbers {
             ret += num as u64;
         }
-        // let numbers = get_invalid_id_part2(ranges[0], ranges[1]);
-        // for num in numbers {
-        //     ret2 += num as u64;
-        // }
+        let numbers = get_invalid_id_part2(ranges[0], ranges[1]);
+        for num in numbers {
+            ret2 += num as u64;
+        }
     }
 
     println!("ret {ret}, ret2 ");
