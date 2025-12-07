@@ -51,9 +51,18 @@ fn combine_digit(start: u64, end: u64, digits : &Vec<u64>)->CombinedDigit{
 
 fn is_invalid_id_part2(num: u64)->bool {
     let digits = get_number_of_digits(num);
-    for idx in 0..=digits.len() /2 -1 {
+    let mut tmp_len: u64 = 0;
+    if digits.len() % 2 == 0 {
+        tmp_len = digits.len() as u64 / 2 - 1;
+    }
+    else {
+        tmp_len = digits.len() as u64 / 2;
+    }
+    for idx in 0..=tmp_len {
         let mut continue_to_check = true;
         let combined_digit = combine_digit(0,idx as u64, &digits);
+        if digits.len() % combined_digit.len as usize != 0 { continue;}
+        if digits.len() == 1 { continue;}
         let mut i_named_another_idx = combined_digit.len as usize;
         while i_named_another_idx <= digits.len() - combined_digit.len as usize {
             let candiate_to_compare = combine_digit(i_named_another_idx as u64, (i_named_another_idx + combined_digit.len as usize - 1) as u64, &digits);
@@ -126,6 +135,13 @@ fn test_part2() {
 }
 
 #[test]
+fn test_is_invalid_id_part2() {
+   assert_eq!(false,is_invalid_id_part2(3737333733));
+   assert_eq!(true,is_invalid_id_part2(3737337373));
+   assert_eq!(false, is_invalid_id_part2(1));
+}
+
+#[test]
 fn test_combine_digits() {
     let input: Vec<u64> = vec![1];
     let ret = combine_digit(0, 0, &input);
@@ -163,5 +179,5 @@ fn main() {
         }
     }
 
-    println!("ret {ret}, ret2 ");
+    println!("ret {ret}, ret2 {ret2}");
 }
