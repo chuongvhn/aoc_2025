@@ -1,10 +1,7 @@
-use std::collections::VecDeque;
-
-
 fn get_battery_ids(line: &String) -> u32 {
-    let mut numbers: VecDeque<u32> = VecDeque::new();
+    let mut numbers: Vec<u32> = Vec::new();
     for s in line.chars() {
-        numbers.push_back(s.to_string().parse().unwrap());
+        numbers.push(s.to_string().parse().unwrap());
     }
     let mut max_0: u32 = 0;
     let mut max_0_idx = 0;
@@ -41,53 +38,29 @@ fn get_battery_ids(line: &String) -> u32 {
     }
 }
 
-struct MaxDigitAndPos {
-    digit : u32,
-    pos : usize
-}
 
-fn get_max_digit_and_its_pos(input: &mut VecDeque<u32>, digit_and_pos : MaxDigitAndPos) -> MaxDigitAndPos{
-    let mut ret : MaxDigitAndPos = MaxDigitAndPos { digit: 0, pos: 0 };
-    let actuall_pos : usize;
-    if digit_and_pos.pos == 0 && digit_and_pos.digit ==0 {
-        actuall_pos = 0;
-    }
-    else {
-        actuall_pos = digit_and_pos.pos +1;
-    }
+fn get_battery_ids_part2(input: &String) -> u64 {
+    let digits: Vec<u32> = input.chars().map(|digit_in_char| digit_in_char.to_digit(10).unwrap()).collect();
+    let maximum_num_of_removals = digits.len() - 12;
+    let mut buffer: Vec<u32> = Vec::new();
+    let mut num_of_removals = 0;
 
-    if actuall_pos != input.len() -1 {
-        for idx in actuall_pos..input.len() as usize {
-            if ret.digit < input[idx] {
-                ret.digit = input[idx];
-                ret.pos = idx;
-            }
+    for &digit in &digits {
+        while !buffer.is_empty() && *buffer.last().unwrap() < digit && num_of_removals < maximum_num_of_removals {
+            buffer.pop();
+            num_of_removals += 1;
         }
+        buffer.push(digit);
     }
-    else {
-        panic!("something wrong");
-    }
-    
-    return ret;
-}
 
-fn get_battery_ids_part2(input: &String)-> u64 {
-    let mut result : u64 = 0;
-    let mut numbers: VecDeque<u32> = VecDeque::new();
-    for s in input.chars() {
-        numbers.push_back(s.to_string().parse().unwrap());
+    while num_of_removals < maximum_num_of_removals {
+        buffer.pop();
+        num_of_removals += 1;
     }
-    const NUM_OF_DIGITS : u32 = 12;
 
-    let mut max_digit_and_its_pos = MaxDigitAndPos{digit: 0, pos: 0 };
-    for i in 0..NUM_OF_DIGITS {
-        max_digit_and_its_pos = get_max_digit_and_its_pos(&mut numbers,max_digit_and_its_pos);
-        if max_digit_and_its_pos.pos == numbers.len() - 1 {
-            result += max_digit_and_its_pos.pos as u64;
-        }
-        else {
-            result += max_digit_and_its_pos.digit as u64 * 10u64.pow(NUM_OF_DIGITS -i -1);
-        }
+    let mut result = 0u64;
+    for &d in &buffer {
+        result = result * 10 + d as u64;
     }
 
     return result;
@@ -103,12 +76,6 @@ fn test_get_battery_ids_part2() {
     assert_eq!(434234234278, get_battery_ids_part2(&line));
     let line = "818181911112111".to_string();
     assert_eq!(888911112111, get_battery_ids_part2(&line));
-    // let line = "2222422126525122433332324122232442621332112124353325142213221221321242522245242222212213223253222222".to_string();
-    // assert_eq!(66,get_battery_ids_part2(&line));
-    // let line = "6986637616744837475696535678356366536287839555455376737334329457284565566954578742689469447785687752".to_string();
-    // assert_eq!(99, get_battery_ids_part2(&line));
-    // let line = "4444355567375444144441434742443725566463147643443444453733475443534453656464433364465467345427344384".to_string();
-    // assert_eq!(84, get_battery_ids_part2(&line));
 }
 
 
