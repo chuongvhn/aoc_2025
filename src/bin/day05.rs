@@ -14,47 +14,6 @@ fn part1(ingredient_id_ranges: & Vec<(u64,u64)>, available_ingredient_ids: &Vec<
     cnt
 }
 
-fn part2(ingredient_id_ranges: &mut Vec<(u64,u64)>)->u64 {
-    let mut cnt = 0u64;
-    let mut min_start_of_range = u64::MAX;
-    let mut max_start_of_range = 0u64;
-    for range in &*ingredient_id_ranges {
-        if range.0 < min_start_of_range {
-            min_start_of_range = range.0;
-        }
-        if range.1 > max_start_of_range {
-            max_start_of_range = range.1;
-        }
-    }
-
-    println!("range in check {}-{}, number of num {}", min_start_of_range, max_start_of_range, max_start_of_range - min_start_of_range +1);
-    while !ingredient_id_ranges.is_empty() {
-        let range_to_check = ingredient_id_ranges[0];
-        let mut indices_to_remove = Vec::new();
-        for idx in 1..ingredient_id_ranges.len() {
-            if range_to_check.0 <= ingredient_id_ranges[idx].0 && range_to_check.1 >= ingredient_id_ranges[idx].1 {
-                cnt+= range_to_check.1 - range_to_check.0 + 1;
-                indices_to_remove.push(idx);
-            }
-            else if range_to_check.0 >= ingredient_id_ranges[idx].0 && range_to_check.1 <= ingredient_id_ranges[idx].1 {
-                cnt+= ingredient_id_ranges[idx].1 - ingredient_id_ranges[0].0 +1;
-                indices_to_remove.push(idx);
-            }
-            else if range_to_check.0 <= ingredient_id_ranges[idx].0 && (range_to_check.1 < ingredient_id_ranges[idx].1 && range_to_check.1 >= ingredient_id_ranges[idx].0) {
-                cnt += ingredient_id_ranges[idx].1 -range_to_check.0 +1;
-            }
-            else if (range_to_check.0 > ingredient_id_ranges[idx].0 && range_to_check.0 < ingredient_id_ranges[idx].1) && range_to_check.1 > ingredient_id_ranges[idx].1 {
-                cnt += range_to_check.1 - ingredient_id_ranges[idx].0 +1;
-            }
-        }
-        for idx in indices_to_remove.iter().rev() {
-            ingredient_id_ranges.remove(*idx);
-        }
-        ingredient_id_ranges.remove(0);
-    }
-    cnt
-}
-
 fn part22(ranges: &[(u64, u64)]) -> u64 {
     if ranges.is_empty() { return 0; }
     let mut sorted = ranges.to_vec();
