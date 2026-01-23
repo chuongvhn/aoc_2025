@@ -26,35 +26,61 @@ fn parse_input_to_work_sheet(input: &[String]) -> u64 {
 }
 
 fn part2(input: &[String]) -> u64 {
-    let mut result = 0u64;
     let mut work_sheet :Vec<Vec<char>> = Vec::new();
     for (row_idx, line) in input.iter().enumerate() {
         work_sheet.push(Vec::new());
         for c in line.chars() {
             work_sheet[row_idx].push(c);
         }
-        result += 1;
     }
 
     let mut parsed_number_from_worksheet : Vec<String> = Vec::new();
-    for idx in (0..work_sheet[0].len() -1).rev() {
-        if work_sheet[0][idx] != ' ' && work_sheet[1][idx] != ' ' && work_sheet[2][idx] != ' ' && work_sheet[3][idx] != ' ' {
+    for idx in (0..work_sheet[0].len()).rev() {
+        if work_sheet[0][idx] != ' ' || work_sheet[1][idx] != ' ' || work_sheet[2][idx] != ' ' || work_sheet[3][idx] != ' ' {
             let mut num : String = String::new();
-            num.push(work_sheet[0][idx]);
-            num.push(work_sheet[1][idx]);
-            num.push(work_sheet[2][idx]);
-            num.push(work_sheet[3][idx]);
+            if work_sheet[0][idx] == ' ' {
+                num.push('0');
+            }
+            else {
+                num.push(work_sheet[0][idx]);
+            }
+            
+            if work_sheet[1][idx] == ' ' {
+                num.push('0');
+            }
+            else {
+                num.push(work_sheet[1][idx]);
+            }
+            
+            if work_sheet[2][idx] == ' ' {
+                num.push('0');
+            }
+            else {
+                num.push(work_sheet[2][idx]);
+            }
+            
+            if work_sheet[3][idx] == ' ' {
+                num.push('0');
+            }
+            else {
+                num.push(work_sheet[3][idx]);
+            }
+            
             parsed_number_from_worksheet.push(num);
         }
         else {
-            parsed_number_from_worksheet.push(work_sheet[4][idx -1].to_string());
+            parsed_number_from_worksheet.push(work_sheet[4][idx +1].to_string());
         }
     }
 
-    for item in parsed_number_from_worksheet {
-        println!("{item}");
-    }
 
+    let mut result = 0u64;
+    let stack_to_store_all_nums_in_each_operation: Vec<u64> = Vec::new();
+    for number_in_string in parsed_number_from_worksheet {
+        let maybe_number = number_in_string.parse::<u64>();
+        while number_in_string
+        result += number_in_string.parse::<u64>().unwrap();
+    }
     result
 }
 
