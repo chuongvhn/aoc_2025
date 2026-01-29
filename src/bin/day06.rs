@@ -38,34 +38,10 @@ fn part2(input: &[String]) -> u64 {
     for idx in (0..work_sheet[0].len()).rev() {
         if work_sheet[0][idx] != ' ' || work_sheet[1][idx] != ' ' || work_sheet[2][idx] != ' ' || work_sheet[3][idx] != ' ' {
             let mut num : String = String::new();
-            if work_sheet[0][idx] == ' ' {
-                num.push('0');
-            }
-            else {
-                num.push(work_sheet[0][idx]);
-            }
-            
-            if work_sheet[1][idx] == ' ' {
-                num.push('0');
-            }
-            else {
-                num.push(work_sheet[1][idx]);
-            }
-            
-            if work_sheet[2][idx] == ' ' {
-                num.push('0');
-            }
-            else {
-                num.push(work_sheet[2][idx]);
-            }
-            
-            if work_sheet[3][idx] == ' ' {
-                num.push('0');
-            }
-            else {
-                num.push(work_sheet[3][idx]);
-            }
-            
+            num.push(work_sheet[0][idx]);
+            num.push(work_sheet[1][idx]);
+            num.push(work_sheet[2][idx]);
+            num.push(work_sheet[3][idx]);
             parsed_numbers_from_worksheet.push(num);
         }
         else {
