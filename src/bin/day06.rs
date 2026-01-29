@@ -34,7 +34,7 @@ fn part2(input: &[String]) -> u64 {
         }
     }
 
-    let mut parsed_number_from_worksheet : Vec<String> = Vec::new();
+    let mut parsed_numbers_from_worksheet : Vec<String> = Vec::new();
     for idx in (0..work_sheet[0].len()).rev() {
         if work_sheet[0][idx] != ' ' || work_sheet[1][idx] != ' ' || work_sheet[2][idx] != ' ' || work_sheet[3][idx] != ' ' {
             let mut num : String = String::new();
@@ -66,20 +66,39 @@ fn part2(input: &[String]) -> u64 {
                 num.push(work_sheet[3][idx]);
             }
             
-            parsed_number_from_worksheet.push(num);
+            parsed_numbers_from_worksheet.push(num);
         }
         else {
-            parsed_number_from_worksheet.push(work_sheet[4][idx +1].to_string());
+            parsed_numbers_from_worksheet.push(work_sheet[4][idx +1].to_string());
         }
     }
 
-
+    //debug
+    println!("{:?}", parsed_numbers_from_worksheet);
     let mut result = 0u64;
-    let stack_to_store_all_nums_in_each_operation: Vec<u64> = Vec::new();
-    for number_in_string in parsed_number_from_worksheet {
+    let mut stack_to_store_all_nums_in_each_operation: Vec<u64> = Vec::new();
+    for number_in_string in parsed_numbers_from_worksheet {
         let maybe_number = number_in_string.parse::<u64>();
-        while number_in_string
-        result += number_in_string.parse::<u64>().unwrap();
+        if maybe_number.is_ok() {
+            stack_to_store_all_nums_in_each_operation.push(maybe_number.unwrap());
+        }
+        else {
+            let mut tmp_multiple = 1u64;
+            let mut tmp_sum = 0u64;
+            for num in &stack_to_store_all_nums_in_each_operation {
+                if number_in_string == "*" {
+                    tmp_multiple *= num;
+                }
+                else if number_in_string == "+" {
+                    tmp_sum += num;
+                }
+                else {
+                    panic!("weird thing is happening");
+                }
+            }
+            stack_to_store_all_nums_in_each_operation.clear();
+            result += tmp_multiple + tmp_sum;
+        }
     }
     result
 }
