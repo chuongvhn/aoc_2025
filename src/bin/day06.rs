@@ -42,7 +42,8 @@ fn part2(input: &[String]) -> u64 {
             num.push(work_sheet[1][idx]);
             num.push(work_sheet[2][idx]);
             num.push(work_sheet[3][idx]);
-            parsed_numbers_from_worksheet.push(num);
+            let num_without_space = num.replace(" ","");
+            parsed_numbers_from_worksheet.push(num_without_space);
         }
         else {
             parsed_numbers_from_worksheet.push(work_sheet[4][idx +1].to_string());
@@ -50,7 +51,7 @@ fn part2(input: &[String]) -> u64 {
     }
 
     //debug
-    println!("{:?}", parsed_numbers_from_worksheet);
+    // println!("{:?}", parsed_numbers_from_worksheet);
     let mut result = 0u64;
     let mut stack_to_store_all_nums_in_each_operation: Vec<u64> = Vec::new();
     for number_in_string in parsed_numbers_from_worksheet {
@@ -73,7 +74,12 @@ fn part2(input: &[String]) -> u64 {
                 }
             }
             stack_to_store_all_nums_in_each_operation.clear();
-            result += tmp_multiple + tmp_sum;
+            if tmp_multiple != 1 {
+                result += tmp_multiple;
+            }
+            if tmp_sum != 0 {
+                result += tmp_sum;
+            }
         }
     }
     result
