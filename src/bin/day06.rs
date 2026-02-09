@@ -48,10 +48,13 @@ fn part2(input: &[String]) -> u64 {
         else {
             parsed_numbers_from_worksheet.push(work_sheet[4][idx +1].to_string());
         }
+        if idx == 0 {
+            parsed_numbers_from_worksheet.push(work_sheet[4][idx].to_string());
+        }
     }
 
     //debug
-    // println!("{:?}", parsed_numbers_from_worksheet);
+    println!("{:?}", parsed_numbers_from_worksheet);
     let mut result = 0u64;
     let mut stack_to_store_all_nums_in_each_operation: Vec<u64> = Vec::new();
     for number_in_string in parsed_numbers_from_worksheet {
